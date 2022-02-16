@@ -7,22 +7,36 @@ import { InfoPagina } from '../interfaces/info-pagina.interface';
 })
 export class InfoPaginaService {
 
-  info : InfoPagina = {};
+  info: InfoPagina = {};
   cargada = false;
+  equipo: any[] = [];
 
-  constructor( private http : HttpClient ) {
-    //console.log('Servicio de infoPagina listo');
+  constructor(private http: HttpClient) {
+    this.cargarInfo();
+    this.cargarEquipo();
 
+  }
+
+  private cargarInfo() {
     // leer el archivo JSON
     this.http.get('assets/data/data-pagina.json')
-       .subscribe( (resp:InfoPagina) => {
+      .subscribe((resp: InfoPagina) => {
 
-         this.cargada = true;
-         this.info = resp;
-         console.log(resp);
-         
-       } );
+        this.cargada = true;
+        this.info = resp;
+        console.log(resp);
 
+      });
 
-   }
+  }
+
+  private cargarEquipo() {
+    this.http.get('https://angular-html-4c741-default-rtdb.firebaseio.com/equipo.json')
+    .subscribe( (res: any[] ) => {
+      this.equipo = res;
+      console.log(res);
+    } );
+
+  }
+
 }
